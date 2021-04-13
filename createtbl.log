@@ -1,0 +1,66 @@
+(c) Copyright IBM Corporation 1993,2007
+Command Line Processor for DB2 Client 11.5.4.0
+
+You can issue database manager commands and SQL statements from the command 
+prompt. For example:
+    db2 => connect to sample
+    db2 => bind sample.bnd
+
+For general help, type: ?.
+For command help, type: ? command, where command can be
+the first few keywords of a database manager command. For example:
+ ? CATALOG DATABASE for help on the CATALOG DATABASE command
+ ? CATALOG          for help on all of the CATALOG commands.
+
+To exit db2 interactive mode, type QUIT at the command prompt. Outside 
+interactive mode, all commands must be prefixed with 'db2'.
+To list the current command option settings, type LIST COMMAND OPTIONS.
+
+For more detailed help, refer to the Online Reference Manual.
+
+db2 => db2 => db2 => db2 => db2 => CONNECT TO cs421
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.5.4.0
+ SQL authorization ID   = JQU16
+ Local database alias   = CS421
+
+
+db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE category (gname VARCHAR(50) NOT NULL, priority INTEGER, PRIMARY KEY (gname))
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE person (hin BIGINT NOT NULL, pname VARCHAR(30), gender VARCHAR(15), birthdate DATE, regdate DATE, gname VARCHAR(50) NOT NULL, phone BIGINT, pstreet VARCHAR(30), ppostal VARCHAR(15), pcity VARCHAR(30), PRIMARY KEY (hin), FOREIGN KEY (gname) REFERENCES category(gname))
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE vacclocation (lname VARCHAR(50) NOT NULL, lstreet VARCHAR(30), lpostal VARCHAR(15), lcity VARCHAR(30), PRIMARY KEY (lname))
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE hospital (lname VARCHAR(50) NOT NULL, PRIMARY KEY (lname), FOREIGN KEY (lname) REFERENCES vacclocation)
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE nurse (cnln BIGINT NOT NULL, nname VARCHAR(30) NOT NULL, lname VARCHAR(50) NOT NULL, PRIMARY KEY (cnln), FOREIGN KEY (lname) REFERENCES hospital)
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE vaccine (manufacturer VARCHAR(30) NOT NULL, numofdoses INTEGER, waitdays INTEGER, PRIMARY KEY (manufacturer))
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE batch (manufacturer VARCHAR(30) NOT NULL, batchnum INTEGER NOT NULL, manufacturerdate DATE, expirydate DATE, numofvials INTEGER, lname VARCHAR(50) NOT NULL, CHECK (manufacturerdate < expirydate), PRIMARY KEY (manufacturer, batchnum), FOREIGN KEY (manufacturer) REFERENCES vaccine, FOREIGN KEY (lname) REFERENCES vacclocation)
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE vial (manufacturer VARCHAR(30) NOT NULL, batchnum INTEGER NOT NULL, vialnum INTEGER NOT NULL, PRIMARY KEY (manufacturer, batchnum, vialnum), FOREIGN KEY (manufacturer, batchnum) REFERENCES batch)
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE slot (slotid INTEGER NOT NULL, vacctime TIME, vaccdate DATE, lname VARCHAR(50) NOT NULL, PRIMARY KEY (slotid), FOREIGN KEY (lname) REFERENCES vacclocation)
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE assigndate (slotid INTEGER NOT NULL, cnln BIGINT NOT NULL, PRIMARY KEY (slotid), FOREIGN KEY (slotid) REFERENCES slot, FOREIGN KEY (cnln) REFERENCES nurse)
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE personalloc (slotid INTEGER NOT NULL, hin BIGINT NOT NULL, aloocdate DATE NOT NULL, PRIMARY KEY (slotid), FOREIGN KEY (hin) REFERENCES person(hin), FOREIGN KEY (slotid) REFERENCES slot(slotid))
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE vaccslot (slotid INTEGER NOT NULL, manufacturer VARCHAR(30), batchnum INTEGER, vialnum INTEGER, PRIMARY KEY (slotid), FOREIGN KEY (slotid) REFERENCES slot, FOREIGN KEY (manufacturer, batchnum, vialnum) REFERENCES vial)
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => 
